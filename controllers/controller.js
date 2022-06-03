@@ -1,17 +1,19 @@
 
+const TicketControl = require('../models/ticket-control');
+const ticketControl = new TicketControl();
+
 const socketController = (socket) => { 
 
-    console.log('Cliente conectado', socket.id);
+    socket.emit('ultimo-ticket', ticketControl.ultimo);
 
-    socket.on('disconnect', () => { 
+    socket.on('siguiente-ticket', (payload,callback) => {
 
-        console.log('Cliente desconectado', socket.id);
+        const siguiente = ticketControl.siguiente();        
+        callback(siguiente);
 
+        //TODO: Notificar que hay un ticket pendiente de asignar
     });
 
-    socket.on('enviar-mensaje', (payload) => {
-        socket.broadcast.emit('enviar-mensaje', payload);
-    });
 }
 
 module.exports ={

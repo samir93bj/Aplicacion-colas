@@ -1,32 +1,30 @@
-// Comando para establecer la conexión
-var socket = io();
 
-var label = $('#lblNuevoTicket');
+// Referencias del HTML
+const lblNuevoTicket  = document.querySelector('#lblNuevoTicket');
+const btnCrear = document.querySelector('button');
 
+const socket = io();
 
-socket.on('connect', function() {
-    console.log('Conectado al servidor');
-});
-
-socket.on('disconnect', function() {
-    console.log('Desconectado del servidor');
-});
-
-// on 'estadoActual'
-socket.on('estadoActual', function(resp) {
-
-    console.log(resp);
-    label.text(resp.actual);
+socket.on('connect', () => {
+    // console.log('Conectado');
+    btnCrear.disabled = false;
 
 });
 
+socket.on('disconnect', () => {
+    // console.log('Desconectado del servidor');
 
-$('button').on('click', function() {
+    btnCrear.disabled = true;
+});
 
-    socket.emit('siguienteTicket', null, function(siguienteTicket) {
+socket.on('ultimo-ticket',(ultimo)=> {
+    lblNuevoTicket.innerText = 'Ticket: '+ ultimo;
+});
 
-        label.text(siguienteTicket);
-
+btnCrear.addEventListener( 'click', () => {
+    
+    socket.emit( 'siguiente-ticket' , null, ( ticket ) => {
+        lblNuevoTicket.innerText = ticket;
     });
 
 });
