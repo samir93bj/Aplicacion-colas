@@ -58,25 +58,31 @@ class TicketControl {
         return 'Ticket: ' + ticket.numero;
     }
 
-    atenderTicket(escritorio){
-
-        //No tenemos tickets
-        if (this.tickets.length === 0){
-            return null;
+    atenderTicket( escritorio ){
+        
+        //No tenemos tickets//
+        if (this.tickets.length === 0) {
+            return 'No hay tickets';
         }
 
-        const ticket = this.tickets.shift(); //shift borra el primer elemento del arreglo
-        ticket.escritorio = escritorio;
+        let numeroTicket = this.tickets[0].numero;
+        this.tickets.shift();
 
-        this.ultimos4.unshift(ticket);
+        let atenderTicket = new Ticket(numeroTicket, escritorio);
 
-        if (this.ultimos4.length > 4){
-            this.ultimos4.splice(-1,1);
+        this.ultimos4.unshift(atenderTicket);
+
+        if (this.ultimos4.length > 4) {
+            this.ultimos4.splice(-1, 1); // borra el último
         }
+
+        //console.log('Ultimos 4');
+        //console.log(this.ultimos4);
 
         this.guardarDB();
 
-        return 'Ticket: ' + ticket;
+        return atenderTicket;
+
     }
 
 }

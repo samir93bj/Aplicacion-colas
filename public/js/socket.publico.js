@@ -1,41 +1,47 @@
-// Comando para establecer la conexión
-var socket = io();
+//Referencias HTML
+const lblTicket1  = document.querySelector('#lblTicket1');
+const lblEscritorio1 = document.querySelector('#lblEscritorio1');
 
-var lblTicket1 = $('#lblTicket1');
-var lblTicket2 = $('#lblTicket2');
-var lblTicket3 = $('#lblTicket3');
-var lblTicket4 = $('#lblTicket4');
+const lblTicket2 = document.querySelector('#lblTicket2');
+const lblEscritorio2 = document.querySelector('#lblEscritorio2');
 
-var lblEscritorio1 = $('#lblEscritorio1');
-var lblEscritorio2 = $('#lblEscritorio2');
-var lblEscritorio3 = $('#lblEscritorio3');
-var lblEscritorio4 = $('#lblEscritorio4');
+const lblTicket3 = document.querySelector('#lblTicket3');
+const lblEscritorio3 = document.querySelector('#lblEscritorio3');
 
+const lblTicket4 = document.querySelector('#lblTicket4');
+const lblEscritorio4 = document.querySelector('#lblEscritorio4');
 
-var lblTickets = [lblTicket1, lblTicket2, lblTicket3, lblTicket4];
-var lblEscritorios = [lblEscritorio1, lblEscritorio2, lblEscritorio3, lblEscritorio4];
+const socket = io();
+ 
 
-socket.on('estadoActual', function(data) {
-    // console.log(data);
-    actualizaHTML(data.ultimos4);
-});
+socket.on('estado-actual',( payload )=> {
+    const [ticket1, ticket2, ticket3, ticket4] = payload;
+    
+    if(ticket1){
+        lblTicket1.innerText = 'Ticket ' + ticket1.numero;
+        lblEscritorio1.innerText = ticket1.escritorio;
+    }else{
 
-socket.on('ultimos4', function(data) {
-    // console.log(data);
-
-    var audio = new Audio('audio/new-ticket.mp3');
-    audio.play();
-
-    actualizaHTML(data.ultimos4);
-});
-
-
-function actualizaHTML(ultimos4) {
-
-    for (var i = 0; i <= ultimos4.length - 1; i++) {
-
-        lblTickets[i].text('Ticket ' + ultimos4[i].numero);
-        lblEscritorios[i].text('Escritorio ' + ultimos4[i].escritorio);
     }
 
-}
+    if(ticket2){
+        lblTicket2.innerText = 'Ticket ' + ticket2.numero;
+        lblEscritorio2.innerText = ticket2.escritorio;
+    }else{
+
+    }
+
+    if(ticket3){
+        lblTicket3.innerText ='Ticket ' + ticket3.numero;
+        lblEscritorio3.innerText = ticket3.escritorio;
+    }else{
+
+    }
+
+    if(ticket4){
+        lblTicket4.innerText = 'Ticket ' + ticket4.numero;
+        lblEscritorio4.innerText = ticket4.escritorio;    
+    }else{
+
+    }
+});
